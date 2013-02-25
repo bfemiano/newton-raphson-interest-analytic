@@ -21,6 +21,6 @@ Edit HADOOP_HOME in newton_rahsphon.sh and run ./newton_rahspon.sh. The partfile
 The reducer groups by unique account and calculates the time-weighted interest rate on the account using quadratic convergence. Each account gets 25 maximum attempts to converge the weighted interest rate below 0.0000001 before exiting. 
 See: http://www.sosmath.com/calculus/diff/der07/der07.html
 
-Time intervals are a % assumed to be a common year. The analytic only works on a per-year basis for now. 
+times for each account are assumed to be percentages of a common year. The analytic only works on a per-year basis for now. 
 1.0 represents the beginning balance (Jan 01) and 0.0 represents the end of year (Dec 31). The reducer sorts by perc_time such that
 the year end entry appears first to the reducer for each account, and can be used to set the year-end value.

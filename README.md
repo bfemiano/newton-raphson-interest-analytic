@@ -6,10 +6,10 @@ Hadoop streaming application written in Python capable of calculating time-weigh
 Build the data using 'python data_gen.py <num_accounts> where num_accounts equals how many 
 unique account names to reproduce in the dataset. 
 
-Data is in the form of (account-# account_delta perc_of_year)
-account#= unique account identifier
-account_delta = +/-1 amount to account. 
-perc_year = day of the year divided into 1 (example day 100 = 100/365 = .27)
+Data is in the form of (account-# adjustment perc_of_year) where
+'account#'= unique account identifier,
+'adjustment' = +/-1 amount to account, and 
+'perc_year' = day of the year divided into 1 (example day 100 = 100/365 = .27).
 
 Upload the data to hadoop at /fake_investments/in.
 

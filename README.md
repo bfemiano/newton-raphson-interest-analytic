@@ -20,4 +20,4 @@ See: http://www.sosmath.com/calculus/diff/der07/der07.html
 
 Time intervals are a % assumed to be a common year. The analytic only works on a per-year basis for now. 
 0.0 represents the beginning (Jan 01) and 1.0 represents the end (Dec 31). The reducer sorts by perc_time such that
-0.0 entry appears first to the reducer for each accont, and can be used to set the year-end value.
+the year end entry appears first to the reducer for each accont, and can be used to set the year-end value.

@@ -17,7 +17,6 @@ def get_for_key():
         prevAccount = account
     yield prevAccount, investments
 
-
 def main():
     for account,investments in get_for_key():
         max_tries = 1

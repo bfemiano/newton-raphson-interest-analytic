@@ -1,10 +1,15 @@
 newton-rahpson-interest-analytict
 =================================
 
-Hadoop streaming application written in python capable of calculating time-weighted interest using Newton-Rahpson method. 
+Hadoop streaming application written in Python capable of calculating time-weighted interest using Newton-Rahpson method. 
 
 Build the data using 'python data_gen.py <num_accounts> where num_accounts equals how many 
 unique account names to reproduce in the dataset. 
+
+Data is in the form of (account-# account_delta perc_of_year)
+account#= unique account identifier
+account_delta = +/-1 amount to account. 
+perc_year = day of the year divided into 1 (example day 100 = 100/365 = .27)
 
 Upload the data to hadoop at /fake_investments/in.
 
@@ -15,4 +20,5 @@ across the cluster. Each account gets 25 maximum attempts to converge the weight
 See: http://www.sosmath.com/calculus/diff/der07/der07.html
 
 Time intervals are a % assumed to be a common year. The analytic only works on a per-year basis for now. 
-0.0 represents the beginning (Jan 01) and 1.0 represents the end (Dec 31).
+0.0 represents the beginning (Jan 01) and 1.0 represents the end (Dec 31). The reducer sorts by perc_time such that
+0.0 entry appears first to the reducer for each accont, and can be used to set the year-end value.

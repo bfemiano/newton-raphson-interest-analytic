@@ -1,27 +1,25 @@
 __author__ = 'bfemiano'
 import sys
-import random
 
 def main():
     out = open('data.txt', 'w')
     args = sys.argv[1:]
     total_records = int(args[0])
     for i in xrange(0, total_records):
-        seed = random.randint(0, 100000)
-        ran_adjs = random.randint(4, 5)
-        j = 0
-        out.write('account-'+str(i) + '\t1.0\t' + str(seed) + '\n')
-        while j < ran_adjs:
-            amount = random.randint(0, 10000)
-            neg = random.randint(0, 100)
-            if neg <= 5: #%5 chance we get a negative number
-                amount = 0 - amount
-            if seed + amount >= 0:
-                j+=1
-                per_of_year = float(random.randint(0, 100))/100.0
-                out.write('account-' + str(i) + '\t' + str(per_of_year) + '\t' + str(amount) + '\n')
-                seed += amount
-        out.write('account-'+str(i) + '\t0.0\t' + str(seed) + '\n')
+        out.write('account' + str(i) +  '\t0.0\t8863.06\n')
+        out.write('account' + str(i) + '\t0.8904\t400.00\n')
+        out.write('account' + str(i) + '\t0.7890\t500.00\n')
+        out.write('account' + str(i) + '\t0.6767\t500.00\n')
+        out.write('account' + str(i) + '\t0.5589\t350.00\n')
+        out.write('account' + str(i) + '\t1.0000\t5382.48\n')
+        out.write('account' + str(i) + '\t0.4795\t-1000.00\n')
+        out.write('account' + str(i) + '\t0.4630\t350.00\n')
+        out.write('account' + str(i) + '\t0.3781\t350.00\n')
+        out.write('account' + str(i) + '\t0.2932\t350.00\n')
+        out.write('account' + str(i) + '\t0.2110\t350.00\n')
+        out.write('account' + str(i) + '\t0.1260\t350.00\n')
+        out.write('account' + str(i) + '\t0.0438\t350.00\n')
     out.close()
+
 if __name__ == "__main__":
     main()

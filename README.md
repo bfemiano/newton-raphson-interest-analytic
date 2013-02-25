@@ -1,4 +1,4 @@
-newton-rahpson-interest-analytict
+newton-rahpson-interest-analytic
 =================================
 
 Hadoop streaming application written in Python that calculates time-weighted interest using Newton-Rahpson method.

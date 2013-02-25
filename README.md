@@ -9,7 +9,9 @@ unique account names to reproduce in the dataset.
 Data is in the form of (account-# adjustment perc_of_year) where
 'account#'= unique account identifier,
 'adjustment' = +/-1 amount to account, and 
-'perc_year' = day of the year divided into 1 (example day 100 = 100/365 = .27).
+'perc_year' = days left in the year divided into 1 (example day 100 = (365-100)/365 = .27, day 0 = (365- 0)/365 = 1)
+1.0 represents the accounts starting balance for the year. 
+0.0 represents the accounts year-end balance. 
 
 Upload the data to hadoop at /fake_investments/in.
 

@@ -16,7 +16,7 @@ Data is in the form of (account# adjustment perc_year) where
 
 Upload the data to hadoop at /fake_investments/in.
 
-Edit HADOOP_HOME in newton_rahsphon.sh and run ./newton_rahspon.sh. The partfile output will be under /fake_investments/out. 
+Edit HADOOP_HOME in newton_rahpson.sh and run ./newton_rahspon.sh. The partfile output will be under /fake_investments/out. 
 
 The reducer groups by unique account and calculates the time-weighted interest rate on the account using quadratic convergence. Each account gets 25 maximum attempts to converge the difference from the previous attempt below 0.0000001 before exiting. 
 See: http://www.sosmath.com/calculus/diff/der07/der07.html

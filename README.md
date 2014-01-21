@@ -18,7 +18,7 @@ To use the default shell script first upload the data to hadoop at /fake_investm
 
 Then edit HADOOP_HOME in newton_rahpson.sh and run <code>./newton_rahspon.sh</code>. The partfile output will be under <code>/fake_investments/out</code>. 
 
-The reducer groups by unique account, sorts by time ascending and calculates the time-weighted interest rate on the account using quadratic convergence. Each account gets 25 maximum attempts to converge the difference from the previous attempt below 0.0000001 before exiting. 
+The reducer groups by unique account, sorts by time descending order and calculates the time-weighted interest rate on the account using quadratic convergence. Each account gets 25 maximum attempts to converge the difference from the previous attempt below 0.0000001 before exiting. 
 For an in-depth explaination of Newton-Rahpson method: http://www.sosmath.com/calculus/diff/der07/der07.html
 
 Times for each account are assumed to be percentages of a common year. The analytic only works on a per-year basis for now. 

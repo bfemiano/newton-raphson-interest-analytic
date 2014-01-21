@@ -2,7 +2,7 @@ newton-rahpson-interest-analytic
 =================================
 
 Hadoop streaming application written in Python that calculates time-weighted interest using Newton-Rahpson method.
-Taking into account the time of year any adjustments (positive and negative) that were made to each account. 
+Time-weighted meaning taking into account the time of year any adjustments (positive and negative) that were made to each account to give a more accurate year interest rate. 
 
 Build the data using 'python data_gen.py <num_accounts>' where num_accounts equals how many 
 unique account names to reproduce in the dataset. 

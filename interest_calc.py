@@ -19,25 +19,6 @@ def get_old_data_format():
         [1, 0.0438, 350.0]
     ]
 
-def get_old_data_format_last_item_adjust():
-    # return [
-    #     [1, 0.0, 630.58],
-    #     [1, 0.8904, 400.0],
-    #     [1, 0.7890, 500.0],
-    #     [1, 0.6767, 500.0],
-    #     [1, 0.5589, 350.0],
-    #     [1, 1.000, 5382.48],
-    #     [1, 0.4795, -1000.0],
-    #     [1, 0.4630, 350.0],
-    #     [1, 0.3781, 350.0],
-    #     [1, 0.2932, 350.0],
-    #     [1, 0.2110, 350.0],
-    #     [1, 0.1260, 350.0],
-    #     [1, 0.0438, 350.0]
-    # ]
-    return [(1, '1.0|5382.48;0.89|400.0;0.79|500.0;0.68|500.0;0.56|350.0;0.48|-1000.0;0.46|350.0;0.38|350.0;0.3|350.0;0.21|350.0;0.13|350.0;0.04|350.0;0.0|630.58')]
- 
-
 def get_new_data_format():
     return [
         [1, '2013-01-01', 5382.48], 
@@ -182,12 +163,13 @@ def calc_time_weighted_interest():
     output = cur.fetchall()
     print(output)
     con.close()
+    (account_id, interest) = output[0]
+    return interest
 
-#old_data = list(map(lambda x: [x[2], x[1]], sorted(get_old_data_format_last_item_adjust(), key=lambda x: x[1])))
-old_data = '0.0|630.58;0.04|350.0;0.13|350.0;0.21|350.0;0.3|350.0;0.38|350.0;0.46|350.0;0.48|-1000.0;0.56|350.0;0.68|500.0;0.79|500.0;0.89|400.0;1.0|5382.48'
-new_interest = newton_rhapson_converge(old_data)
+# old_data = '0.0|630.58;0.04|350.0;0.13|350.0;0.21|350.0;0.3|350.0;0.38|350.0;0.46|350.0;0.48|-1000.0;0.56|350.0;0.68|500.0;0.79|500.0;0.89|400.0;1.0|5382.48'
+# new_interest = newton_rhapson_converge(old_data)
 old_interest = newton_rhapson_converage_old()
+new_interest = calc_time_weighted_interest()
 print(new_interest)
 print(old_interest)
 assert round(old_interest, 2) == round(new_interest, 2)
-calc_time_weighted_interest()

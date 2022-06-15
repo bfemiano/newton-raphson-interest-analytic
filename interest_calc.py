@@ -56,13 +56,11 @@ def transform():
     return inc_to_balance
 
 def newton_rhapson_converage_old():
-    print("OLD")
     old_data = get_old_data_format()
     investments = list(map(lambda x: [x[2], x[1]], sorted(old_data, key=lambda x: x[1])))
     max_tries = 1
     starting = investments[0]
     investments.remove(starting)
-    print(investments)
     year_end_value = 8863.03
     x = 0.1
     f = 0 - year_end_value
@@ -84,12 +82,10 @@ def newton_rhapson_converge(investments):
         Input: list of tuples of the form (perc_of_year, balance_adjustment)
         Output: Interest accrued. 
     """
-    print("NEW")
     investments = [r.split('|') for r in investments.split(';')]
     investments = list(map(lambda x: [float(x[1]), float(x[0])], investments))
     year_end_value = sum(map(lambda x: x[0], investments))
     investments.remove(investments[0])
-    print(investments)
     max_tries = 1
     x = 0.1
     f = 0 - year_end_value
@@ -151,23 +147,28 @@ def get_query():
     """
 
 def calc_time_weighted_interest():
-    # load the data into an in-memory table
-    con = sqlite3.connect(':memory:')
-    cur = con.cursor()
-    cur.execute("CREATE TABLE account_balance (account_id int, date text, balance real)")
-    con.create_function("TIME_WEIGHTED_INTEREST", 1, newton_rhapson_converge)
-    con.commit()
-    cur.executemany("insert into account_balance values (?, ?, ?)", get_new_data_format())
+    # load the data into an in-memory table.
+    try:
+        con = sqlite3.connect(':memory:')
+        cur = con.cursor()
+        cur.execute("CREATE TABLE account_balance (account_id int, date text, balance real)")
+        con.create_function("TIME_WEIGHTED_INTEREST", 1, newton_rhapson_converge)
+        con.commit()
+        cur.executemany("insert into account_balance values (?, ?, ?)", get_new_data_format())
 
-    cur.execute(get_query())
-    output = cur.fetchall()
-    print(output)
-    con.close()
-    (account_id, interest) = output[0]
-    return interest
+        cur.execute(get_query())
+        results = cur.fetchall()
+        con.close()
+        if len(results) > 0:
+            (account_id, interest) = results[0]
+            return interest
+        else:
+            raise Exception("No results in query. Something went wrong.")
+    except:
+        raise
+    finally:
+        con.close()
 
-# old_data = '0.0|630.58;0.04|350.0;0.13|350.0;0.21|350.0;0.3|350.0;0.38|350.0;0.46|350.0;0.48|-1000.0;0.56|350.0;0.68|500.0;0.79|500.0;0.89|400.0;1.0|5382.48'
-# new_interest = newton_rhapson_converge(old_data)
 old_interest = newton_rhapson_converage_old()
 new_interest = calc_time_weighted_interest()
 print(new_interest)

@@ -27,13 +27,13 @@ def get_new_data_format():
         [1, '2013-04-28', 6782.48], 
         [1, '2013-06-10', 7132.48], 
         [1, '2013-07-08', 6132.48], 
-        [1, '2013-07-15', 6482.48], 
+        [1, '2013-07-15', 6482.48],
         [1, '2013-08-14', 6832.48], 
         [1, '2013-09-14', 7182.48],
         [1, '2013-10-14', 7532.48], 
         [1, '2013-11-15', 7882.48], 
         [1, '2013-12-15', 8232.48], 
-        [1, '2013-12-31', 8863.06]
+        [1, '2013-12-31', 8863.06],
     ]
 
 
@@ -77,14 +77,19 @@ def newton_rhapson_converage_old():
         f_prime = 0
     return x * 100.0
 
-def newton_rhapson_converge(investments):
+def time_weighted_interest(investments):
     """
-        Input: list of tuples of the form (perc_of_year, balance_adjustment)
-        Output: Interest accrued. 
+        Uses Newton-Rahpson method. Use quadratic convergance to arrive at the
+        true interest rate over the year, given all +/- adjustments to the account balance.
+
+        Input: semi-colon delimited string of pipe-delimited pairs (perc_of_year, adjustment)
+        Output: time-weighted interest accrued over the year.
     """
+    # converts perc1|adj1;perc2|adj2 into [[perc1, adj1], [per2, adj2]]
     investments = [r.split('|') for r in investments.split(';')]
-    investments = list(map(lambda x: [float(x[1]), float(x[0])], investments))
-    year_end_value = sum(map(lambda x: x[0], investments))
+    # convert floating point values.
+    investments = list(map(lambda x: [float(x[0]), float(x[1])], investments))
+    year_end_value = sum(map(lambda x: x[1], investments))
     investments.remove(investments[0])
     max_tries = 1
     x = 0.1
@@ -92,8 +97,8 @@ def newton_rhapson_converge(investments):
     f_prime = 0
     while max_tries < 25:
         for inv in investments:
-            f += inv[0] * (1 + x) ** inv[1]
-            f_prime += inv[1] * inv[0] * (1 + x) ** (-1 + inv[1])
+            f += inv[1] * (1 + x) ** inv[0]
+            f_prime += inv[0] * inv[1] * (1 + x) ** (-1 + inv[0])
         if fabs(f/f_prime) <= 0.0000001:
             break
         x -= f/f_prime
@@ -123,36 +128,36 @@ def get_query():
                 END as adjustment
             FROM prior_balances
         ),
-        adjs_plus_perc_of_year AS (
+        adjs_and_perc_year_remaining AS (
             SELECT
                 account_id, 
-                ROUND((365 - CAST(STRFTIME('%j', date) AS INT)) / 365.0, 2) as perc_of_year,
+                ROUND((365 - CAST(STRFTIME('%j', date) AS INT)) / 365.0, 2) as perc_year_remaining,
                 ROUND(adjustment, 2) as adjustment
             FROM adjustments
-            ORDER BY perc_of_year ASC
         ),
         concatted AS (
             SELECT 
                 account_id, 
-                perc_of_year || '|' || adjustment as perc_adj_pair
-            FROM adjs_plus_perc_of_year
+                perc_year_remaining || '|' || adjustment as perc_adj_pair
+            FROM adjs_and_perc_year_remaining
+            ORDER BY account_id, perc_year_remaining ASC
         ),
         group_concatted AS (
             SELECT
                 account_id,
                 GROUP_CONCAT(perc_adj_pair, ";") as adjustments
             FROM concatted
+            GROUP BY account_id
         )
-        SELECT account_id, TIME_WEIGHTED_INTEREST(adjustments) FROM group_concatted
+        SELECT account_id, TIME_WEIGHTED_INTEREST(adjustments) FROM group_concatted 
     """
-
 def calc_time_weighted_interest():
     # load the data into an in-memory table.
     try:
         con = sqlite3.connect(':memory:')
         cur = con.cursor()
         cur.execute("CREATE TABLE account_balance (account_id int, date text, balance real)")
-        con.create_function("TIME_WEIGHTED_INTEREST", 1, newton_rhapson_converge)
+        con.create_function("TIME_WEIGHTED_INTEREST", 1, time_weighted_interest)
         con.commit()
         cur.executemany("insert into account_balance values (?, ?, ?)", get_new_data_format())
 

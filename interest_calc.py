@@ -19,7 +19,7 @@ def get_old_data_format():
         [1, 0.0438, 350.0]
     ]
 
-def get_new_data_format():
+def get_data():
     return [
         [1, '2013-01-01', 5382.48], 
         [1, '2013-02-10', 5782.48],
@@ -159,7 +159,7 @@ def calc_time_weighted_interest():
         cur.execute("CREATE TABLE account_balance (account_id int, date text, balance real)")
         con.create_function("TIME_WEIGHTED_INTEREST", 1, time_weighted_interest)
         con.commit()
-        cur.executemany("insert into account_balance values (?, ?, ?)", get_new_data_format())
+        cur.executemany("insert into account_balance values (?, ?, ?)", get_data())
 
         cur.execute(get_query())
         results = cur.fetchall()

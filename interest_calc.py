@@ -79,16 +79,20 @@ def newton_rhapson_converage_old():
 
 def time_weighted_interest(investments):
     """
-        Uses Newton-Rahpson method. Use quadratic convergance to arrive at the
-        true interest rate over the year, given all +/- adjustments to the account balance.
+        Uses Newton-Rahpson method. Use quadratic convergance 
+        to arrive at the
+        true interest rate over the year, 
+        given all +/- adjustments to the account balance.
 
-        Input: semi-colon delimited string of pipe-delimited pairs (perc_of_year, adjustment)
+        Input: semi-colon delimited string of 
+            pipe-delimited pairs (perc_of_year, adjustment)
         Output: time-weighted interest accrued over the year.
     """
     # converts perc1|adj1;perc2|adj2 into [[perc1, adj1], [per2, adj2]]
     investments = [r.split('|') for r in investments.split(';')]
     # convert floating point values.
-    investments = list(map(lambda x: [float(x[0]), float(x[1])], investments))
+    investments = list(map(lambda x: [float(x[0]), float(x[1])], 
+        investments))
     year_end_value = sum(map(lambda x: x[1], investments))
     investments.remove(investments[0])
     max_tries = 1
@@ -114,9 +118,10 @@ def get_query():
                 account_id,
                 date, 
                 balance,
-                LAG(balance, 1) OVER (PARTITION BY account_id ORDER BY date) AS prior_balance
+                LAG(balance, 1) 
+                    OVER (PARTITION BY account_id ORDER BY date) 
+                    AS prior_balance
             FROM account_balance
-
         ),
         adjustments AS (
             SELECT 
@@ -131,7 +136,8 @@ def get_query():
         adjs_and_perc_year_remaining AS (
             SELECT
                 account_id, 
-                ROUND((365 - CAST(STRFTIME('%j', date) AS INT)) / 365.0, 2) as perc_year_remaining,
+                ROUND((365 - CAST(STRFTIME('%j', date) AS INT)) / 365.0, 2) 
+                    AS perc_year_remaining,
                 ROUND(adjustment, 2) as adjustment
             FROM adjustments
         ),
@@ -149,21 +155,26 @@ def get_query():
             FROM concatted
             GROUP BY account_id
         )
-        SELECT account_id, TIME_WEIGHTED_INTEREST(adjustments) FROM group_concatted 
+        SELECT 
+            account_id, 
+            TIME_WEIGHTED_INTEREST(adjustments) 
+        FROM group_concatted 
     """
 def calc_time_weighted_interest():
     # load the data into an in-memory table.
     try:
         con = sqlite3.connect(':memory:')
         cur = con.cursor()
-        cur.execute("CREATE TABLE account_balance (account_id int, date text, balance real)")
-        con.create_function("TIME_WEIGHTED_INTEREST", 1, time_weighted_interest)
+        cur.execute("CREATE TABLE account_balance " 
+           + "(account_id int, date text, balance real)")
         con.commit()
-        cur.executemany("insert into account_balance values (?, ?, ?)", get_data())
+        cur.executemany("INSERT INTO account_balance values " 
+        + "(?, ?, ?)", get_data())
 
+        con.create_function("TIME_WEIGHTED_INTEREST", 
+           1, time_weighted_interest)
         cur.execute(get_query())
         results = cur.fetchall()
-        con.close()
         if len(results) > 0:
             (account_id, interest) = results[0]
             return interest
@@ -175,7 +186,7 @@ def calc_time_weighted_interest():
         con.close()
 
 old_interest = newton_rhapson_converage_old()
-new_interest = calc_time_weighted_interest()
-print(new_interest)
+interest = calc_time_weighted_interest()
+print(interest)
 print(old_interest)
-assert round(old_interest, 2) == round(new_interest, 2)
+assert round(old_interest, 2) == round(interest, 2)

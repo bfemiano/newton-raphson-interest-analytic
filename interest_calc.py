@@ -80,8 +80,7 @@ def newton_rhapson_converage_old():
 def time_weighted_interest(investments):
     """
         Uses Newton-Rahpson method. Use quadratic convergance 
-        to arrive at the
-        true interest rate over the year, 
+        to arrive at the true interest rate over the year,
         given all +/- adjustments to the account balance.
 
         Input: semi-colon delimited string of 
@@ -180,8 +179,6 @@ def calc_time_weighted_interest():
             return interest
         else:
             raise Exception("No results in query. Something went wrong.")
-    except:
-        raise
     finally:
         con.close()
 

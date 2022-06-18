@@ -3,7 +3,7 @@ To run `python interest_calc.py`
 Yup. That's it. The code checked in does an assertion as an inline unit test between this verison and the older_streaming_version. This was so I could verify
 correctness as I refactored.
 
-The new version using SQLlite to create an in-memory database with fake account data of the form:
+The new version uses SQLlite to create an in-memory database with fake account data of the form:
 
 `account_id, date, balance`
 

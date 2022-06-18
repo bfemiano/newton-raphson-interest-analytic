@@ -37,4 +37,4 @@ We'd put the (0.01, 200) ahead of the (0.05, -100) in the sorted list. This is b
 
 Since SQLlite doesn't have list datatypes, we can instead use a delimited string with group concat.
 
-Now we have the data in the form we need to calculate the true time-weighted interest growth for every account id using [newton rhapson method](http://www.sosmath.com/calculus/diff/der07/der07.html).
+Now we have the data in the form we need to calculate the true time-weighted interest growth for every account id using [newton raphson method](http://www.sosmath.com/calculus/diff/der07/der07.html).

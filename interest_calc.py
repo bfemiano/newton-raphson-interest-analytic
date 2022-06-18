@@ -55,7 +55,7 @@ def transform():
             inc_to_balance.append([r[0], r[1], balance])
     return inc_to_balance
 
-def newton_rhapson_converage_old():
+def newton_raphson_converage_old():
     old_data = get_old_data_format()
     investments = list(map(lambda x: [x[2], x[1]], sorted(old_data, key=lambda x: x[1])))
     max_tries = 1
@@ -79,7 +79,7 @@ def newton_rhapson_converage_old():
 
 def time_weighted_interest(investments):
     """
-        Uses Newton-Rahpson method. Use quadratic convergance 
+        Uses Newton-Raphson method. Use quadratic convergance
         to arrive at the true interest rate over the year,
         given all +/- adjustments to the account balance.
 
@@ -182,7 +182,7 @@ def calc_time_weighted_interest():
     finally:
         con.close()
 
-old_interest = newton_rhapson_converage_old()
+old_interest = newton_raphson_converage_old()
 interest = calc_time_weighted_interest()
 print(interest)
 print(old_interest)

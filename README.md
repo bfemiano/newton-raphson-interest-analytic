@@ -14,16 +14,17 @@ accounts, but for clarity sake I only included one account in the fixture data.
 
 We first use SQL to transform this dataset into a series of records of the form:
 
-`account_id, percentage_of_year_remaining, balance adjustment +/-`
+`account_id, percentage_year_remaining, balance adjustment +/-`
 
 Where:
 
-`percentage_of_year_remaining` = value between 0.0 and 1.0. Where 0.0 = Jan 1st and 1.0 = Dec 31st. We consider this the percentage of the year remaining, given the day of the year.
+`percentage_year_remaining` = value between 0.0 and 1.0. Where 0.0 = Jan 1st and 1.0 = Dec 31st. We consider this the percentage of the year remaining, given the day of the year.
 
 `balance adjustment` = the inflow or outflow of cash. This can be negative if a withdrawl occurred.
 
 Once we have the data in this form, we want to group adjustments by account_id and collect a list of
-two-element tuples (perc_of_year_remaining, adjustment), sorted by perc_of_year_remaining descending.
+two-element tuples `(perc_year_remaining, adjustment)`, sorted by `perc_year_remaining` ascending. This will
+effectively reverse chronological ordering.
 
 So if we had for example account with the following actions over 2022
 ```

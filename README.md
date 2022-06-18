@@ -18,7 +18,7 @@ We first use SQL to transform this dataset into a series of records of the form:
 
 Where:
 
-`percentage_year_remaining` = value between 0.0 and 1.0. Where 0.0 = Jan 1st and 1.0 = Dec 31st. We consider this the percentage of the year remaining, given the day of the year.
+`percentage_year_remaining` = value between 0.0 and 1.0. Where 0.0 = Dec 31st and 1.0 = Jan 1st. We consider this the percentage of the year remaining, given the day of the year.
 
 `balance adjustment` = the inflow or outflow of cash. This can be negative if a withdrawl occurred.
 
@@ -28,7 +28,7 @@ effectively reverse chronological ordering.
 
 So if we had for example account with the following actions over 2022
 ```
-date      adjustment
+date   adjustment
 0.01    200
 0.05   -100
 ```
